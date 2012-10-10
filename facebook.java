@@ -49,7 +49,7 @@ public class facebook
 		String res="";
 		try
 		{
-//			https://graph.facebook.com/oauth/access_token?client_id=187627904695576&redirect_uri=http://yoga1290.appspot.com/oauth/facebook/callback/&client_secret=e35d3d770c34bf5c2204177015d1b28e&code=
+//			https://graph.facebook.com/oauth/access_token?client_id=187627904695576&redirect_uri=http://yoga1290.appspot.com/oauth/facebook/callback/&client_secret=********************&code=
 			URL url = new URL("https://graph.facebook.com/oauth/access_token?client_id="+CLIENT_ID
 							+"&redirect_uri=http://yoga1290.appspot.com/oauth/facebook/callback/"
 							+"&client_secret="+CLIENT_SECRET
