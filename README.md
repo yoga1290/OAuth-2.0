@@ -4,4 +4,4 @@ I'm using basic URL Connections to implement the OAuth 2.0 Client/App-side.. My 
 
 More updates soon,stay tune!
 
-& Sure,Feel free to like or "Stargaze" or report issues/feedbacks! :D!
+& Sure,Feel free to "Star" this repo or report issues/feedbacks! :D!
