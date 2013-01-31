@@ -1,9 +1,10 @@
-package yoga1290.schoolmate;
+package yoga1290.printk;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Vector;
 
-import org.json.JSONObject;
+import com.google.appengine.labs.repackaged.org.json.JSONObject;
 public class Foursquare 
 {
 	/**
@@ -14,7 +15,7 @@ public class Foursquare
 	 * @return access_token
 	 * @throws Exception
 	 */
-	public static String getAccessToken(String CLIENT_ID,String CLIENT_SECRET,String code) throws Exception
+	public static String getAccessToken(String CLIENT_ID,String CLIENT_SECRET,String redirectURI,String code) throws Exception
 	{
 		String res="";
 		/*
@@ -26,7 +27,7 @@ public class Foursquare
 			URL url = new URL("https://foursquare.com/oauth2/access_token?client_id="+CLIENT_ID
 					+"&client_secret="+CLIENT_SECRET
 					+"&grant_type=authorization_code"
-					+"&redirect_uri=http://yoga1290.appspot.com/oauth/foursquare/callback?state=test"
+					+"&redirect_uri="+redirectURI
 					+"&code="+code);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             InputStream in=connection.getInputStream();
@@ -35,7 +36,6 @@ public class Foursquare
             while((ch=in.read(buff))!=-1)
             		res+=new String(buff,0,ch);
             in.close();
-            
             //Extract the access token
             return new JSONObject(res).getString("access_token");
 	}
@@ -135,4 +135,152 @@ public class Foursquare
         in.close();
         return new JSONObject(res);
 	}
+	
+	/**
+	 * 
+	 * @see https://developer.foursquare.com/docs/users/checkins
+	 * @param access_token 
+	 * @param YYYYMMDD
+	 * @return JSONObject of Checkins
+	 * @throws Exception
+	 * 
+	 * lat/lng: JSONObject(response).getJSONArray("items").get(i).getJSONObject("venue").get("location").getDouble("lat"/"lng")
+	 * e.g:
+	 * checkins: {
+				count: 275
+				items: [
+					{
+						id: "50eb356de4b0aa6e11dcc03a"
+						createdAt: 1357591917
+						type: "checkin"
+						timeZoneOffset: 120
+						venue: {
+						id: "4c8a7391770fb60c04bad2c3"
+						name: "Zanilli's"
+						contact: { }
+						location: {
+							address: "Stanley"
+							lat: 31.23531591308383
+							lng: 29.950098754019564
+							city: "Alexandria"
+							country: "Egypt"
+							cc: "EG"
+						}
+						canonicalUrl: "https://foursquare.com/v/zanillis/4c8a7391770fb60c04bad2c3"
+						categories: [
+							{
+								id: "4bf58dd8d48988d16d941735"
+								name: "Café"
+								pluralName: "Cafés"
+								shortName: "Café"
+								icon: {
+									prefix: "https://foursquare.com/img/categories_v2/food/cafe_"
+									suffix: ".png"
+								}
+								primary: true
+							}
+						]
+						verified: false
+						stats: {
+							checkinsCount: 164
+							usersCount: 104
+							tipCount: 13
+						}
+						likes: {
+							count: 8
+							groups: [
+								{
+								type: "others"
+								count: 8
+								items: [
+									{
+										id: "15291391"
+										firstName: "Ahmed"
+										lastName: "E."
+										gender: "male"
+										photo: {
+											prefix: "https://irs0.4sqi.net/img/user/"
+											suffix: "/1TNP4R2LA34K5ZSM.jpg"
+										}
+									}
+									{
+										id: "35226126"
+										firstName: "ziad"
+										lastName: "o."
+										gender: "male"
+										photo: {
+											prefix: "https://irs0.4sqi.net/img/user/"
+											suffix: "/blank_boy.png"
+										}
+									},………
+									]
+								}
+							]
+						summary: "Ahmed E, ziad o, Mona T & 5 others"
+					}
+					like: false
+					beenHere: {
+						count: 1
+						marked: false
+					}
+					specials: {
+						count: 0
+					}
+				}
+					likes: {
+					count: 0
+					groups: [ ]
+					}
+					like: false
+					photos: {
+					count: 0
+					items: [ ]
+					}
+					posts: {
+					count: 0
+					textCount: 0
+					}
+					comments: {
+					count: 0
+					items: [ ]
+					}
+					source: {
+					name: "foursquare for Android"
+					url: "https://foursquare.com/download/#/android"
+					}
+				}
+	 */
+	public static JSONObject getCheckins(String access_token,String YYYYMMDD) throws Exception
+	{
+		String res="";
+		URL url = new URL("https://api.foursquare.com/v2/users/self/checkins?oauth_token="+access_token+"&v="+YYYYMMDD);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        InputStream in=connection.getInputStream();
+        byte buff[]=new byte[in.available()];
+        int ch;
+        while((ch=in.read(buff))!=-1)
+        		res+=new String(buff,0,ch);
+        in.close();
+        return new JSONObject(res);
+	}
+	public static JSONObject getCheckins(String access_token,String YYYYMMDD,int offset) throws Exception
+	{
+		String res="";
+		URL url = new URL("https://api.foursquare.com/v2/users/self/checkins?oauth_token="+access_token+"&v="+YYYYMMDD+"&offset="+offset);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        InputStream in=connection.getInputStream();
+        byte buff[]=new byte[in.available()];
+        int ch;
+        while((ch=in.read(buff))!=-1)
+        		res+=new String(buff,0,ch);
+        in.close();
+        return new JSONObject(res);
+	}
+	
+	
+//	public static int[] getCheckinTimes(String access_token,String venueId,String YYYYMMDD)
+//	{
+//		Vector<Integer> res=new Vector<Integer>();
+//		
+//	}
 }
